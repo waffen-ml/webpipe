@@ -2,7 +2,11 @@ const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
 const { Server } = require("socket.io");
+const cors = require('cors');
 const io = new Server(server);
+
+app.use(cors());
+
 
 const timeout = 5 * 1000;
 let backend = null;
