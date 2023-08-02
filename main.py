@@ -20,5 +20,5 @@ def disconnect():
     print('disconnected from server')
 
 
-sio.connect('http://localhost:3000')
+sio.connect('http://web-pipe.onrender.com')
 sio.wait()
