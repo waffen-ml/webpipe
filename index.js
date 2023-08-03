@@ -64,6 +64,11 @@ io.on('connection', socket => {
         sendData(msg.id, msg.data);
     });
 
+    socket.on('disconnect', () => {
+        console.log('Backend has disconnected');
+        backend = null;
+    });
+
     socket.on('test', (msg) => {
         console.log('test msg:');
         console.log(msg);
@@ -73,12 +78,6 @@ io.on('connection', socket => {
 
     backend = socket;
 });
-
-io.on('disconnect', dSocket => {
-    if (!backend || dSocket.id != backend.id) return;
-    console.log('Backend has disconnected');
-    backend = null;
-})
 
 server.listen(443, () => {
     console.log('listening on *:443');
