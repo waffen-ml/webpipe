@@ -60,9 +60,8 @@ io.on('connection', socket => {
     }
 
     socket.on('message', (msg) => {
-        //sendData(msg.id, msg.data);
-        console.log('msg');
-        console.log(msg);
+        console.log('Sending data...')
+        sendData(msg.id, msg.data);
     });
 
     socket.on('test', (msg) => {

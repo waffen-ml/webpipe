@@ -36,7 +36,7 @@ io.on('connection', socket => {
     }
 
     socket.on('message', (msg) => {
-        //sendData(msg.id, msg.data);
+        sendData(msg.id, msg.data);
         console.log('msg');
         console.log(msg);
     });
