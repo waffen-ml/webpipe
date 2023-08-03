@@ -9,16 +9,12 @@ def connect():
 
 @sio.event
 def message(req):
-    print(req)
+    data = req['data']
+    sio.emit('message', {'id': req['id'], 'data': data})
 
 @sio.event
 def disconnect():
     print('disconnected from server')
 
 sio.connect('https://web-pipe.onrender.com')
-
-for i in range(100):
-    sio.emit('message', {'text': 'привет from python'})
-    time.sleep(1)
-    
 sio.wait()
