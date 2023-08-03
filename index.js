@@ -2,11 +2,7 @@ const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
 const { Server } = require("socket.io");
-const cors = require('cors');
 const io = new Server(server);
-
-app.use(cors());
-
 
 const timeout = 5 * 1000;
 let backend = null;
@@ -21,14 +17,14 @@ function addToQueue(res) {
 }
 
 function removeFromQueue(i) {
-    queue[i] = undefined;
+    const obj = queue[i];
+    if (obj) clearTimeout(obj.timeout);
+    delete queue[i];
 }
 
 function sendData(i, data) {
     if (!queue[i]) return;
-    const obj = queue[i];
-    clearTimeout(obj.timeout);
-    obj.res.send(data);
+    queue[i].res.send(data);
     removeFromQueue(i);
 }
 
@@ -53,28 +49,37 @@ app.get('/access', (req, res) => {
     backend.send({id: id, data: data});
 });
 
-
 io.on('connection', socket => {
-    console.log('Backend has connected.');
+    console.log('A new connection!');
 
     if (backend) {
-        console.log('Connection lost.');
+        console.log('Backend has already connected.');
+        console.log('Disconnecting.');
         socket.disconnect();
+        return;
     }
 
     socket.on('message', (msg) => {
-        sendData(msg.id, msg.data);
+        //sendData(msg.id, msg.data);
+        console.log('msg');
+        console.log(msg);
     });
+
+    socket.on('test', (msg) => {
+        console.log('test msg:');
+        console.log(msg);
+    });
+
+    console.log('Backend was attached!');
 
     backend = socket;
 });
 
-io.on('disconnect', socket => {
-    if (socket != backend) return;
+io.on('disconnect', dSocket => {
+    if (!backend || dSocket.id != backend.id) return;
+    console.log('Backend has disconnected');
     backend = null;
-    console.log('Backend has disconnected.');
 })
-
 
 server.listen(443, () => {
     console.log('listening on *:443');
