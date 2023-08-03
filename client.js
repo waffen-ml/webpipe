@@ -2,7 +2,7 @@ const https = require('https');
 const root = 'https://web-pipe.onrender.com/';
 
 
-https.get(root + `access?text=Привет, как у тебя дела ?`, (res) => {
+https.get(root + `access?text=cerf`, (res) => {
     let data = [];
 
     res.on('data', chunk => {
