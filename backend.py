@@ -19,6 +19,6 @@ def message(req):
 def disconnect():
     print('disconnected from server')
 
-
 sio.connect('https://web-pipe.onrender.com')
 sio.wait()
+sio.disconnect()
