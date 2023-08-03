@@ -1,5 +1,8 @@
+const express = require('express');
+const app = express();
+const server = require('http').createServer(app);
 const { Server } = require("socket.io");
-const io = new Server(443);
+const io = new Server(server);
 
 
 io.on('connection', socket => {
@@ -8,3 +11,7 @@ io.on('connection', socket => {
         socket.emit('message', {text: 'ХУУЙЙЙ'});
     });
 })
+
+server.listen(443, () => {
+    console.log('listening on *:443');
+});
